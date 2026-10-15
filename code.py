@@ -7,6 +7,24 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(page_title="Análise de Inquérito", layout="wide")
+
+
+def verificar_chave():
+    if st.session_state.get("autenticado"):
+        return
+    st.title("🔒 Acesso restrito")
+    chave = st.text_input("Chave de acesso", type="password")
+    if chave:
+        if chave == st.secrets["CHAVE"]:
+            st.session_state["autenticado"] = True
+            st.rerun()
+        else:
+            st.error("Chave incorreta.")
+    st.stop()
+
+
+verificar_chave()
+
 st.title("📊 Análise de respostas de inquérito")
 
 STOPWORDS = set(
